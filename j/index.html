@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Aframe Transparent Video Shader</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
+    <script src="./index.js"></script>
+  </head>  
+  <body>
+    <a-scene>
+      <a-assets>
+        <video id="soccerPlayerVideo" src="GLOW800_FL800_comparison_YouTube_1_06.mp4" unmuted loop="true"></video>
+      </a-assets>
+      <a-scene>
+        <a-assets>
+          <!-- <a-mixin id="planet" geometry="primitive: sphere; radius: 0.5"></a-mixin> -->
+      <!-- <a-mixin id="orbit" attribute="rotation" to="0 360 0" repeat="indefinite" easing="linear" dur="3000"></a-mixin> -->
+          <!-- <a-mixin id="spin" attribute="rotation" to="0 360 0" repeat="indefinite" easing="linear" dur="96000"></a-mixin> --> --> -->
+          <img id="sun" src="sun.jpg">
+        </a-assets>
+        <!-- <a-scene background="color: black"></a-scene> -->
+      
+   
+      <a-entity
+        id="soccerPlayer"
+        material="shader: transparent-video; src: #soccerPlayerVideo"
+        geometry="primitive: sphere;
+                  width: 3;
+                  height: -1.0"
+        position="0 1 -2">
+      </a-entity>
+    <a-scene>
+      <a-assets>
+        <video id="soccerPlayerVideo" src="GLOW800_FL800_comparison_YouTube_1_06.mp4" unmuted loop="true"></video>
+      </a-assets>
+      
+      <a-assets>
+        <video id="soccerPlayerVideo" src="GLOW800_FL800_comparison_YouTube_1_06.mp4" unmuted loop="true"></video>
+      </a-assets>
+      
+      <a-entity
+        id="soccerPlayer"
+        material="shader: transparent-video; src: #soccerPlayerVideo"
+        geometry="primitive: sphere;
+                  width: 1;
+                  height: -1.8"
+        position="0 1 -2">
+      </a-entity>
+
+      <a-entity
+        id="soccerPlayer"
+        material="shader: transparent-video; src: #soccerPlayerVideo"
+        geometry="primitive: sphere;
+                  width: 1;
+                  height: -1.8"
+        position="3 1 -2">
+      </a-entity>
+      <!-- <a-sky color="#6EBAA7"></a-sky> -->
+      <a-assets>
+        <video id="soccerPlayerVideo" src="GLOW800_FL800_comparison_YouTube_1_06.mp4" unmuted loop="true"></video>
+      </a-assets>
+      
+      <a-entity
+        id="soccerPlayer"
+        material="shader: transparent-video; src: #soccerPlayerVideo"
+        geometry="primitive: plane;
+                  width: 3;
+                  height: 1.8"
+        position="-3 1 -2">
+      </a-entity>
+      <a-scene>
+       
+        <a-assets>
+          <a-asset-item  id="tree" src="MOnkey_2.gltf"></a-asset-item></a-asset-item>
+        </a-assets>
+      
+        <a-entity gltf-model="#tree" scale="0.5 0.5 0.5"  position="-8 0 -2"  
+        drag-rotate-component></a-entity>
+     <a-entity rotation="360" position="0 0 8">
+     
+      <a-camera user-height="0" look-controls>
+        <a-entity cursor raycaster="far: 20; interval: 1000; objects: .clickable"
+                      position="0 0 -1"
+                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                    material="color: black; shader: flat"
+        ></a-entity>      </a-camera>
+       
+      <!-- <a-camera position="0 0 0" look-controls="enabled:false">
+        <!-- <a-cursor></a-cursor> -->
+      <!-- </a-camera> --> -->
+    
+    </a-scene>
+ 
+      </a-entity>
+      <script type="text/javascript">
+        
+        AFRAME.registerComponent("foo", {
+   init: function() {
+     this.el.addEventListener("click", (e)=>{console.log(e)})
+   }
+ })
+    
+
+        AFRAME.registerComponent('drag-rotate-component',{
+          schema : { speed : {default:1}},
+          init : function(){
+            this.ifMouseDown = true;
+            this.x_cord = 0;
+            this.y_cord = 0;
+            document.addEventListener('mousedown',this.OnDocumentMouseDown.bind(this));
+            document.addEventListener('mouseup',this.OnDocumentMouseUp.bind(this));
+            document.addEventListener('mousemove',this.OnDocumentMouseMove.bind(this));
+          },
+          OnDocumentMouseDown : function(event){
+            this.ifMouseDown = false;
+            this.x_cord = event.clientX;
+            this.y_cord = event.clientY;
+          },
+          OnDocumentMouseUp : function(){
+            this.ifMouseDown = true;
+          },
+          OnDocumentMouseMove : function(event)
+          {
+            if(this.ifMouseDown)
+            {
+              var temp_x = event.clientX-this.x_cord;
+              var temp_y = event.clientY-this.y_cord;
+              if(Math.abs(temp_y)<Math.abs(temp_x))
+              {
+                this.el.object3D.rotateY(temp_x*this.data.speed/300);
+              }
+              else
+              {
+                this.el.object3D.rotateX(temp_y*this.data.speed/300);
+              }
+              this.x_cord = event.clientX;
+              this.y_cord = event.clientY;
+            }
+          }
+        });
+    
+       
+      </script>
+    </a-scene>
+    
+    <!-- <div id="video-message">
+      Click to start playing the video.
+    </div> -->
+   
+  </body>
+</html>
